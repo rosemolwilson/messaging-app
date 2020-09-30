@@ -19,6 +19,7 @@
   integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
   crossorigin="anonymous"
 ></script>
+<script src="/socket.io/socket.io.js"></script>
 
 <div class="container">
   <br />
@@ -40,6 +41,7 @@
   <div id="messages"></div>
 </div>
 <script>
+    var socket = io()
   $(() => {
     $("#send").click(() => {
       var message = { name: $("#name").val(), message: $("#message").val() };
