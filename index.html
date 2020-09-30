@@ -21,37 +21,45 @@
 ></script>
 
 <div class="container">
-  <br>
-  <div class="jumbotron">
+  <br />
+  <div class="p-3 mb-2 bg-info text-white">
     <h1 class="display-4">Send Message</h1>
-    <br>
-    <input class="form-control" placeholder="Name">
-    <br>
-    <button id="send" class="btn btn-success">
+    <br />
+    <input id="name" class="form-control" placeholder="Name" />
+    <br />
+    <textarea
+      id="message"
+      class="form-control"
+      placeholder="Message"
+    ></textarea>
+    <br />
+    <button id="send" class="btn btn-warning">
       Send
     </button>
   </div>
-  <div id="messages">
-
-  </div>
+  <div id="messages"></div>
 </div>
 <script>
   $(() => {
-      $("#send").click(()=>{
-        addMessages({ name: "Rose", message: "Hey" });
-      })
-      getMessages()
-    
+    $("#send").click(() => {
+      var message = { name: $("#name").val(), message: $("#message").val() };
+      postMessage(message);
+    })
+    getMessages();
   })
   function addMessages(message) {
     $("#messages").append(
-      `<h4> ${message.name} </h4> <p> ${message.message} </p>`);
+      `<p class="border border-warning"> <h4 class="display-15"> ${message.name} </h4 > <p class="text-info"> ${message.message} </p> </p>`
+    )
   }
 
   function getMessages() {
-    $.get('http://localhost:3000/messages', (data)=>{
-        data.forEach(addMessages);
-    })
+    $.get("http://localhost:3000/messages", data => {
+      data.forEach(addMessages);
+    });
   }
 
+  function postMessage(message) {
+    $.post("http://localhost:3000/messages", message)
+  }
 </script>
