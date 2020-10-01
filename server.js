@@ -34,12 +34,26 @@ app.get("/messages", (req, res) => {
 app.post("/messages", (req, res) => {
   var message = new Message(req.body)
 
-  message.save(err => {
-    if (err) sendStatus(500)
+  message.save()
+  .then(() => {
+    console.log('Saved +')
+    return Message.findOne({message:'badword'})
+  })
+  .then(censored => {
+    if (censored){
+      return Message.deleteOne({_id:censored.id})
+    }
     io.emit("message", req.body)
     res.sendStatus(200)
   })
+  .catch((err)=> {
+    res.sendStatus(500)
+    console.log("Error", err)
+  })
 })
+
+
+
 
 io.on("connection", socket => {
   console.log("User connected.......")
